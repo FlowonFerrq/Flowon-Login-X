@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowon</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            position: relative;
+            width: 400px;
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg, #111, #333, #111, #333);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            z-index: -2;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        h1 {
+            font-size: 42px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            letter-spacing: 2px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        
+        input:focus {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        button {
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            border-radius: 5px;
+            flex: 1;
+            margin: 0 5px;
+        }
+        
+        button:hover {
+            background: rgba(50, 50, 50, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .login-btn {
+            background: rgba(30, 30, 30, 0.6);
+        }
+        
+        .register-btn {
+            background: rgba(60, 60, 60, 0.6);
+        }
+        
+        .snowflake {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            z-index: -1;
+            animation: fall linear infinite;
+            user-select: none;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        .glow {
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    
+    <div class="container">
+        <h1 class="glow">Flowon</h1>
+        
+        <div class="input-group">
+            <label for="username">Логин</label>
+            <input type="text" id="username" placeholder="Введите ваш логин">
+        </div>
+        
+        <div class="input-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" placeholder="Введите ваш пароль">
+        </div>
+        
+        <div class="btn-group">
+            <button class="login-btn">Войти</button>
+            <button class="register-btn" onclick="window.location.href='https://t.me/prodamlegit'">Зарегистрироваться</button>
+        </div>
+    </div>
+    
+    <script>
+        function createSnowflakes() {
+            const snowflakesCount = 80;
+            
+            for (let i = 0; i < snowflakesCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.innerHTML = '❄';
+                snowflake.classList.add('snowflake');
+                
+                const size = Math.random() * 12 + 8;
+                const posX = Math.random() * window.innerWidth;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 15 + 15;
+                const opacity = Math.random() * 0.7 + 0.3;
+                
+                snowflake.style.left = `${posX}px`;
+                snowflake.style.top = `-${size}px`;
+                snowflake.style.fontSize = `${size}px`;
+                snowflake.style.animationDuration = `${duration}s`;
+                snowflake.style.animationDelay = `${delay}s`;
+                snowflake.style.opacity = opacity;
+                
+                document.body.appendChild(snowflake);
+                
+                setTimeout(() => {
+                    snowflake.remove();
+                    createSnowflake(); // Создаем новую снежинку
+                }, duration * 1000);
+            }
+        }
+        
+        // Ограничение FPS до 60
+        let lastTime = 0;
+        const fps = 60;
+        const interval = 1000 / fps;
+        
+        function animate(time) {
+            requestAnimationFrame(animate);
+            
+            const delta = time - lastTime;
+            
+            if (delta > interval) {
+                // Здесь можно обновлять анимации, если нужно
+                lastTime = time - (delta % interval);
+            }
+        }
+        
+        window.onload = function() {
+            createSnowflakes();
+            requestAnimationFrame(animate);
+            
+            // Добавляем эффект при наведении на кнопки
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    btn.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.3)';
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.boxShadow = 'none';
+                });
+            });
+        };
+    </script>
+</body>
+</html>
